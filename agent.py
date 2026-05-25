@@ -27,6 +27,7 @@ from typing import Any, Optional, Union
 import dotenv
 from github import Auth
 from github import Github
+from github.PullRequestReview import PullRequestReview
 from llama_index.core.agent import FunctionAgent, AgentWorkflow
 from llama_index.core.agent.workflow import AgentOutput, ToolCall, ToolCallResult
 from llama_index.core.prompts import RichPromptTemplate
@@ -117,12 +118,16 @@ def get_commit_details(sha: str) -> Optional[Union[list[dict[str, Any]], str]]:
             return f"Error fetching commit details: {e}"
     return None
 
-def post_review_comment_to_pr(pr_numb: int, final_comment: str) -> None:
+def post_review_comment_to_pr(pr_numb: int, final_comment: str) -> PullRequestReview:
     """Post the final review comment to the PR on GitHub"""
     pr = repo.get_pull(pr_numb)
     if pr is None:
         raise ValueError(f"PR {pr_numb} not found")
-    pr.create_review(body=final_comment)
+    try:
+        return pr.create_review(body=final_comment)
+    except Exception as e:
+        raise Exception(f"Error posting review comment to PR {pr_numb}: {e}")
+
 
 async def add_context_to_state(ctx: Context, name:str, gathered_contexts: dict[str, Any]) -> None:
     """Save the context gathered by the ContextAgent in the context state.
