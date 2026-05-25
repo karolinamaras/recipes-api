@@ -7,7 +7,7 @@ class Recipe(models.Model):
     Represents a recipe with details, such as title, description, preparation time,
     and price.
 
-    This class serves as a data model for creating and managing recipe entities,
+    Serves as a data model for creating and managing recipe entities,
     including attributes such as the title of the recipe, a detailed description, the
     time required to prepare it (in minutes), and its price. Instances of this class
     are typically used in applications related to recipe management or cooking guidelines.
