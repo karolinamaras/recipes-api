@@ -124,7 +124,7 @@ def post_review_comment_to_pr(pr_numb: int, final_comment: str) -> PullRequestRe
     if pr is None:
         raise ValueError(f"PR {pr_numb} not found")
     try:
-        return pr.create_review(body=final_comment)
+        return pr.create_review(body=final_comment,event="COMMENT")
     except Exception as e:
         raise Exception(f"Error posting review comment to PR {pr_numb}: {e}")
 
